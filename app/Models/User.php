@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -23,6 +24,10 @@ class User extends Authenticatable
         'password',
     ];
 
+    public function colocation():BelongsToMany{
+        return $this->belongsToMany(Colocation::class,'user_colocation');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -32,6 +37,8 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+
 
     /**
      * Get the attributes that should be cast.

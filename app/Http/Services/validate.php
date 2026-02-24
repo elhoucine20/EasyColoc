@@ -10,7 +10,7 @@ class Validate{
            'email' => 'required|string',
            'password' => 'required|string',
            'password2'=>'required|string',
-           'role'=>'required|string',
+        //    'role'=>'required|string',
        ]);
    }
 }

@@ -31,6 +31,9 @@ class registerController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->post());
+        // dd("register");
+
         if ($request) {
             # code...
             $password1 = $request->password;
@@ -38,11 +41,12 @@ class registerController extends Controller
             if ($password1 == $password2) {
                 # code...
                 Validate::ValidateUser($request);
+
                 User::create([
                     'name'=>$request->name,
                     'email'=>$request->email,
                     'password'=>$request->password,
-                    'role'=>$request->role,
+                    // 'role'=>""
                     // 'statu'=>"",
                     // 'evaluation'=>"",
 
