@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer une Dépense - ColocApp</title>
+    <title>Liste des Dépenses - ColoSpace</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -17,11 +17,9 @@
             background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
             color: #94A3B8;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
         }
 
-        /* Navbar */
+        /* Navbar Styles */
         .navbar {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(10px);
@@ -47,7 +45,6 @@
             font-size: 1.5rem;
             font-weight: 700;
             color: #ffffff;
-            text-decoration: none;
         }
 
         .navbar-logo i {
@@ -58,353 +55,573 @@
         .navbar-links {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-link {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.625rem 1.25rem;
-            color: #94A3B8;
-            text-decoration: none;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .nav-link i {
-            font-size: 1.1rem;
-        }
-
-        .nav-link:hover {
-            background: rgba(59, 130, 246, 0.1);
-            color: #3B82F6;
-        }
-
-        .nav-link.logout {
-            color: #EF4444;
-        }
-
-        .nav-link.logout:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: #EF4444;
-        }
-
-        /* Main Container */
-        .main-container {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 3rem 2rem;
-        }
-
-        /* Form Card */
-        .form-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(59, 130, 246, 0.1);
-            border-radius: 24px;
-            padding: 3rem;
-            width: 100%;
-            max-width: 700px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Header */
-        .form-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .form-icon {
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
-        }
-
-        .form-icon i {
-            font-size: 2.5rem;
-            color: #ffffff;
-        }
-
-        .form-title {
-            color: #ffffff;
-            font-size: 2.25rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            letter-spacing: -0.5px;
-        }
-
-        .form-subtitle {
-            color: #94A3B8;
-            font-size: 1.1rem;
-            line-height: 1.6;
-        }
-
-        /* Form */
-        .expense-form {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 1.5rem;
         }
 
-        .form-group {
+        .notification-btn {
+            position: relative;
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #94A3B8;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+            border-color: #3B82F6;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #EF4444;
+            color: #ffffff;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.4rem;
+            border-radius: 50%;
+            font-weight: 600;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .user-profile img {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            border: 2px solid #3B82F6;
+        }
+
+        .user-info {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
         }
 
-        .form-group.full-width {
-            grid-column: 1 / -1;
-        }
-
-        .form-label {
+        .user-name {
             color: #ffffff;
             font-weight: 600;
             font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        .form-label i {
-            color: #3B82F6;
-            font-size: 1.1rem;
-        }
-
-        .required {
-            color: #EF4444;
-        }
-
-        .form-input,
-        .form-select {
-            background: rgba(15, 23, 42, 0.6);
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            border-radius: 12px;
-            padding: 1rem 1.25rem;
-            color: #ffffff;
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .form-input::placeholder {
-            color: #64748B;
-        }
-
-        .form-input:focus,
-        .form-select:focus {
-            border-color: #3B82F6;
-            background: rgba(15, 23, 42, 0.8);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-        }
-
-        .form-select {
-            cursor: pointer;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394A3B8' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 1.25rem center;
-            padding-right: 3rem;
-        }
-
-        .form-select option {
-            background: #1E293B;
-            color: #ffffff;
-            padding: 0.75rem;
-        }
-
-        .form-hint {
-            color: #64748B;
-            font-size: 0.875rem;
-            margin-top: -0.5rem;
-        }
-
-        /* Currency Input Group */
-        .input-group {
-            position: relative;
-        }
-
-        .input-group .currency-symbol {
-            position: absolute;
-            right: 1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
+        .user-role {
             color: #14B8A6;
-            font-weight: 600;
-            font-size: 1.1rem;
-            pointer-events: none;
+            font-size: 0.8rem;
         }
 
-        .input-group .form-input {
-            padding-right: 3.5rem;
+        /* Main Content */
+        .main-content {
+            padding: 3rem 2rem;
         }
 
-        /* Buttons */
-        .form-actions {
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Page Header */
+        .page-header {
             display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .btn {
-            padding: 1.125rem 2rem;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            gap: 0.75rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .header-left {
             flex: 1;
         }
 
-        .btn-primary {
+        .page-title {
+            color: #ffffff;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+
+        .page-subtitle {
+            color: #94A3B8;
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: rgba(30, 41, 59, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #94A3B8;
+            padding: 0.875rem 1.5rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-filter:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+            border-color: #3B82F6;
+        }
+
+        .btn-add {
             background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
             color: #ffffff;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: linear-gradient(135deg, #14B8A6 0%, #0D9488 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(20, 184, 166, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-secondary {
-            background: rgba(15, 23, 42, 0.6);
-            border: 2px solid rgba(59, 130, 246, 0.2);
-            color: #94A3B8;
-        }
-
-        .btn-secondary:hover {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: #3B82F6;
-            color: #3B82F6;
-        }
-
-        /* Info Box */
-        .info-box {
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 16px;
-            padding: 1.25rem 1.5rem;
-            margin-top: 2rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-        }
-
-        .info-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(59, 130, 246, 0.2);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #3B82F6;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .info-content {
-            flex: 1;
-        }
-
-        .info-title {
-            color: #3B82F6;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .info-text {
-            color: #94A3B8;
-            font-size: 0.875rem;
-            line-height: 1.5;
-        }
-
-        /* Success Message */
-        .success-message {
-            background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.3);
+            border: none;
+            padding: 0.875rem 1.75rem;
             border-radius: 12px;
-            padding: 1.25rem;
-            display: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Stats Cards */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
-        .success-message.show {
+        .stat-card {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            padding: 1.75rem;
             display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            transition: all 0.3s ease;
         }
 
-        .success-icon {
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon.blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .stat-icon.teal {
+            background: rgba(20, 184, 166, 0.2);
+            color: #14B8A6;
+        }
+
+        .stat-icon.purple {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8B5CF6;
+        }
+
+        .stat-icon.orange {
+            background: rgba(251, 146, 60, 0.2);
+            color: #FB923C;
+        }
+
+        .stat-details {
+            flex: 1;
+        }
+
+        .stat-label {
+            color: #94A3B8;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-size: 1.75rem;
+            font-weight: 700;
+        }
+
+        /* Table Container */
+        .table-container {
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(59, 130, 246, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .table-header {
+            padding: 1.75rem 2rem;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .table-title i {
+            color: #3B82F6;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 10px;
+            padding: 0.625rem 1rem;
+            gap: 0.75rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box:focus-within {
+            border-color: #3B82F6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .search-box i {
+            color: #94A3B8;
+        }
+
+        .search-box input {
+            background: none;
+            border: none;
+            outline: none;
+            color: #ffffff;
+            font-size: 0.9rem;
+            width: 200px;
+        }
+
+        .search-box input::placeholder {
+            color: #64748B;
+        }
+
+        /* Table */
+        .expenses-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .expenses-table thead {
+            background: rgba(15, 23, 42, 0.4);
+        }
+
+        .expenses-table th {
+            padding: 1.25rem 1.5rem;
+            text-align: left;
+            color: #94A3B8;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .expenses-table tbody tr {
+            border-bottom: 1px solid rgba(59, 130, 246, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .expenses-table tbody tr:hover {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .expenses-table tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        .expenses-table td {
+            padding: 1.25rem 1.5rem;
+            color: #ffffff;
+        }
+
+        .expense-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-weight: 500;
+        }
+
+        .expense-icon {
             width: 40px;
             height: 40px;
-            background: rgba(34, 197, 94, 0.2);
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #22C55E;
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             flex-shrink: 0;
         }
 
-        .success-text {
+        .expense-icon.alimentation {
+            background: rgba(34, 197, 94, 0.2);
             color: #22C55E;
+        }
+
+        .expense-icon.services {
+            background: rgba(59, 130, 246, 0.2);
+            color: #3B82F6;
+        }
+
+        .expense-icon.transport {
+            background: rgba(251, 146, 60, 0.2);
+            color: #FB923C;
+        }
+
+        .expense-icon.logement {
+            background: rgba(139, 92, 246, 0.2);
+            color: #8B5CF6;
+        }
+
+        .expense-icon.loisirs {
+            background: rgba(236, 72, 153, 0.2);
+            color: #EC4899;
+        }
+
+        .amount {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #ffffff;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 0.375rem 0.875rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .category-badge.alimentation {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22C55E;
+        }
+
+        .category-badge.services {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3B82F6;
+        }
+
+        .category-badge.transport {
+            background: rgba(251, 146, 60, 0.15);
+            color: #FB923C;
+        }
+
+        .category-badge.logement {
+            background: rgba(139, 92, 246, 0.15);
+            color: #8B5CF6;
+        }
+
+        .category-badge.loisirs {
+            background: rgba(236, 72, 153, 0.15);
+            color: #EC4899;
+        }
+
+        .payer-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .payer-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            border: 2px solid #3B82F6;
+        }
+
+        .date-cell {
+            color: #94A3B8;
+            font-size: 0.95rem;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-badge.paid {
+            background: rgba(34, 197, 94, 0.15);
+            color: #22C55E;
+        }
+
+        .status-badge.pending {
+            background: rgba(251, 146, 60, 0.15);
+            color: #FB923C;
+        }
+
+        .status-badge.overdue {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-badge.paid .status-dot {
+            background: #22C55E;
+        }
+
+        .status-badge.pending .status-dot {
+            background: #FB923C;
+        }
+
+        .status-badge.overdue .status-dot {
+            background: #EF4444;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-action {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-edit {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3B82F6;
+        }
+
+        .btn-edit:hover {
+            background: rgba(59, 130, 246, 0.3);
+            transform: scale(1.1);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.15);
+            color: #EF4444;
+        }
+
+        .btn-delete:hover {
+            background: rgba(239, 68, 68, 0.3);
+            transform: scale(1.1);
+        }
+
+        /* Pagination */
+        .pagination {
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .pagination-info {
+            color: #94A3B8;
+            font-size: 0.9rem;
+        }
+
+        .pagination-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .pagination-btn {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            color: #94A3B8;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
             font-weight: 500;
         }
 
-        /* Error State */
-        .form-input.error,
-        .form-select.error {
-            border-color: #EF4444;
+        .pagination-btn:hover:not(:disabled) {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+            border-color: #3B82F6;
         }
 
-        .error-message {
-            color: #EF4444;
-            font-size: 0.85rem;
-            display: none;
-            margin-top: -0.5rem;
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
+            color: #ffffff;
+            border-color: transparent;
         }
 
-        .error-message.show {
-            display: block;
+        .pagination-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
         }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            .main-container {
-                padding: 2rem 1.5rem;
+        @media (max-width: 1200px) {
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
             }
+        }
 
-            .form-card {
+        @media (max-width: 768px) {
+            .main-content {
                 padding: 2rem 1.5rem;
             }
 
@@ -412,83 +629,62 @@
                 padding: 1rem 1.5rem;
             }
 
-            .form-title {
-                font-size: 1.875rem;
-            }
-
-            .form-subtitle {
-                font-size: 1rem;
-            }
-
-            .form-row {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .form-actions {
+            .page-header {
                 flex-direction: column;
+                align-items: flex-start;
             }
 
-            .btn {
+            .header-actions {
                 width: 100%;
             }
 
-            .navbar-links {
-                gap: 0.25rem;
+            .btn-filter,
+            .btn-add {
+                flex: 1;
             }
 
-            .nav-link span {
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .user-info {
                 display: none;
             }
 
-            .nav-link {
-                padding: 0.625rem;
+            .search-box {
+                display: none;
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .expenses-table {
+                min-width: 800px;
+            }
+
+            .pagination {
+                flex-direction: column;
+                gap: 1rem;
             }
         }
 
         @media (max-width: 480px) {
-            .form-title {
-                font-size: 1.625rem;
-            }
-
-            .form-icon {
-                width: 70px;
-                height: 70px;
-            }
-
-            .form-icon i {
-                font-size: 2rem;
+            .page-title {
+                font-size: 1.75rem;
             }
 
             .navbar-logo {
                 font-size: 1.25rem;
             }
 
-            .navbar-logo i {
-                font-size: 1.5rem;
-            }
-        }
-
-        /* Loading State */
-        .btn.loading {
-            opacity: 0.7;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
-
-        .btn.loading::after {
-            content: "";
-            width: 16px;
-            height: 16px;
-            border: 2px solid #ffffff;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
+            .expenses-table th,
+            .expenses-table td {
+                padding: 1rem;
             }
         }
     </style>
@@ -498,337 +694,429 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-container">
-            <a href="#" class="navbar-logo">
+            <div class="navbar-logo">
                 <i class="fas fa-home"></i>
-                <span>ColocApp</span>
-            </a>
+                <span>ColoSpace</span>
+            </div>
             
             <div class="navbar-links">
-                <a href="#" class="nav-link">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Profile</span>
-                </a>
-                <a href="#" class="nav-link logout">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
+                <button class="notification-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">5</span>
+                </button>
+                
+                <div class="user-profile">
+                    <img src="https://ui-avatars.com/api/?name=John+Doe&background=3B82F6&color=fff" alt="User">
+                    <div class="user-info">
+                        <span class="user-name">John Doe</span>
+                        <span class="user-role">Premium Member</span>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <div class="form-card">
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
             
-            <!-- Success Message -->
-            <div class="success-message" id="successMessage">
-                <div class="success-icon">
-                    <i class="fas fa-check"></i>
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-left">
+                    <h1 class="page-title">Liste des Dépenses</h1>
+                    <p class="page-subtitle">Gérez et suivez toutes vos dépenses mensuelles</p>
                 </div>
-                <span class="success-text">Dépense ajoutée avec succès !</span>
-            </div>
-
-            <!-- Form Header -->
-            <div class="form-header">
-                <div class="form-icon">
-                    <i class="fas fa-receipt"></i>
-                </div>
-                <h1 class="form-title">Créer une nouvelle dépense</h1>
-                <p class="form-subtitle">Ajoutez une dépense partagée pour votre colocation</p>
-            </div>
-
-            <!-- Form -->
-            <form class="expense-form" id="expenseForm">
-                
-                <!-- Title -->
-                <div class="form-group full-width">
-                    <label class="form-label" for="expenseTitle">
-                        <i class="fas fa-tag"></i>
-                        Titre de la dépense
-                        <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="text" 
-                        id="expenseTitle" 
-                        name="expenseTitle" 
-                        class="form-input" 
-                        placeholder="Ex: Courses de la semaine"
-                        required
-                        maxlength="100"
-                    >
-                    <span class="error-message" id="titleError">Veuillez entrer un titre</span>
-                </div>
-
-                <!-- Amount and Date Row -->
-                <div class="form-row">
-                    <!-- Amount -->
-                    <div class="form-group">
-                        <label class="form-label" for="expenseAmount">
-                            <i class="fas fa-dollar-sign"></i>
-                            Montant
-                            <span class="required">*</span>
-                        </label>
-                        <div class="input-group">
-                            <input 
-                                type="number" 
-                                id="expenseAmount" 
-                                name="expenseAmount" 
-                                class="form-input" 
-                                placeholder="0.00"
-                                required
-                                min="0"
-                                step="0.01"
-                            >
-                            <span class="currency-symbol">DH</span>
-                        </div>
-                        <span class="error-message" id="amountError">Veuillez entrer un montant</span>
-                    </div>
-
-                    <!-- Date -->
-                    <div class="form-group">
-                        <label class="form-label" for="expenseDate">
-                            <i class="fas fa-calendar-alt"></i>
-                            Date
-                            <span class="required">*</span>
-                        </label>
-                        <input 
-                            type="date" 
-                            id="expenseDate" 
-                            name="expenseDate" 
-                            class="form-input" 
-                            required
-                        >
-                        <span class="error-message" id="dateError">Veuillez sélectionner une date</span>
-                    </div>
-                </div>
-
-                <!-- Category and Payer Row -->
-                <div class="form-row">
-                    <!-- Category -->
-                    <div class="form-group">
-                        <label class="form-label" for="expenseCategory">
-                            <i class="fas fa-list"></i>
-                            Catégorie
-                            <span class="required">*</span>
-                        </label>
-                        <select 
-                            id="expenseCategory" 
-                            name="expenseCategory" 
-                            class="form-select" 
-                            required
-                        >
-                            <option value="">Sélectionner une catégorie</option>
-                            <option value="alimentation">🛒 Alimentation</option>
-                            <option value="logement">🏠 Logement</option>
-                            <option value="services">💡 Services (Eau, Électricité, Internet)</option>
-                            <option value="transport">🚗 Transport</option>
-                            <option value="loisirs">🎉 Loisirs</option>
-                            <option value="sante">⚕️ Santé</option>
-                            <option value="autre">📦 Autre</option>
-                        </select>
-                        <span class="error-message" id="categoryError">Veuillez sélectionner une catégorie</span>
-                    </div>
-
-                    <!-- Payer -->
-                    <div class="form-group">
-                        <label class="form-label" for="expensePayer">
-                            <i class="fas fa-user"></i>
-                            Payeur
-                            <span class="required">*</span>
-                        </label>
-                        <select 
-                            id="expensePayer" 
-                            name="expensePayer" 
-                            class="form-select" 
-                            required
-                        >
-                            <option value="">Qui a payé ?</option>
-                            <option value="ahmed">Ahmed</option>
-                            <option value="yassine">Yassine</option>
-                            <option value="omar">Omar</option>
-                            <option value="sarah">Sarah</option>
-                            <option value="fatima">Fatima</option>
-                        </select>
-                        <span class="error-message" id="payerError">Veuillez sélectionner un payeur</span>
-                    </div>
-                </div>
-
-                <!-- Description (Optional) -->
-                <!-- <div class="form-group full-width">
-                    <label class="form-label" for="expenseDescription">
-                        <i class="fas fa-align-left"></i>
-                        Description (optionnel)
-                    </label>
-                    <textarea 
-                        id="expenseDescription" 
-                        name="expenseDescription" 
-                        class="form-input" 
-                        placeholder="Ajoutez des détails supplémentaires..."
-                        rows="3"
-                        maxlength="300"
-                        style="resize: vertical; min-height: 100px;"
-                    ></textarea>
-                    <span class="form-hint">Ajoutez des informations complémentaires si nécessaire</span>
-                </div> -->
-
-                <!-- Form Actions -->
-                <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        <i class="fas fa-times"></i>
-                        <span>Annuler</span>
+                <div class="header-actions">
+                    <button class="btn-filter">
+                        <i class="fas fa-filter"></i>
+                        <span>Filtrer</span>
                     </button>
-                    <button type="submit" class="btn btn-primary">
+                    <button class="btn-add">
                         <i class="fas fa-plus"></i>
-                        <span>Ajouter la dépense</span>
+                        <span>Ajouter une dépense</span>
                     </button>
                 </div>
+            </div>
 
-            </form>
-
-            <!-- Info Box -->
-            <div class="info-box">
-                <div class="info-icon">
-                    <i class="fas fa-info-circle"></i>
+            <!-- Stats Cards -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-icon blue">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Total Dépenses</div>
+                        <div class="stat-value">2,450 DH</div>
+                    </div>
                 </div>
-                <div class="info-content">
-                    <div class="info-title">Information</div>
-                    <div class="info-text">
-                        Cette dépense sera automatiquement répartie entre tous les membres de la colocation. Vous pourrez modifier la répartition ultérieurement si nécessaire.
+
+                <div class="stat-card">
+                    <div class="stat-icon teal">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Dépenses Payées</div>
+                        <div class="stat-value">1,850 DH</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon orange">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">En Attente</div>
+                        <div class="stat-value">600 DH</div>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Ce Mois</div>
+                        <div class="stat-value">12 Dépenses</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Expenses Table -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 class="table-title">
+                        <i class="fas fa-receipt"></i>
+                        Toutes les Dépenses
+                    </h2>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Rechercher...">
+                    </div>
+                </div>
+
+                <table class="expenses-table">
+                    <thead>
+                        <tr>
+                            <th>Titre</th>
+                            <th>Montant</th>
+                            <th>Catégorie</th>
+                            <th>Payeur</th>
+                            <th>Date</th>
+                            <th>Status Paiement</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon alimentation">
+                                        <i class="fas fa-shopping-cart"></i>
+                                    </div>
+                                    <span>Courses</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">200 DH</span></td>
+                            <td><span class="category-badge alimentation">Alimentation</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Ahmed&background=3B82F6&color=fff" alt="Ahmed">
+                                    <span>Ahmed</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">12/02/2024</span></td>
+                            <td>
+                                <span class="status-badge paid">
+                                    <span class="status-dot"></span>
+                                    Payé
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon services">
+                                        <i class="fas fa-wifi"></i>
+                                    </div>
+                                    <span>Internet</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">300 DH</span></td>
+                            <td><span class="category-badge services">Services</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Yassine&background=14B8A6&color=fff" alt="Yassine">
+                                    <span>Yassine</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">10/02/2024</span></td>
+                            <td>
+                                <span class="status-badge pending">
+                                    <span class="status-dot"></span>
+                                    En attente
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon transport">
+                                        <i class="fas fa-car"></i>
+                                    </div>
+                                    <span>Transport</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">150 DH</span></td>
+                            <td><span class="category-badge transport">Transport</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Omar&background=8B5CF6&color=fff" alt="Omar">
+                                    <span>Omar</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">09/02/2024</span></td>
+                            <td>
+                                <span class="status-badge paid">
+                                    <span class="status-dot"></span>
+                                    Payé
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon services">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <span>Électricité</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">450 DH</span></td>
+                            <td><span class="category-badge services">Services</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Sarah&background=EC4899&color=fff" alt="Sarah">
+                                    <span>Sarah</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">08/02/2024</span></td>
+                            <td>
+                                <span class="status-badge paid">
+                                    <span class="status-dot"></span>
+                                    Payé
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon logement">
+                                        <i class="fas fa-home"></i>
+                                    </div>
+                                    <span>Loyer</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">800 DH</span></td>
+                            <td><span class="category-badge logement">Logement</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Ahmed&background=3B82F6&color=fff" alt="Ahmed">
+                                    <span>Ahmed</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">05/02/2024</span></td>
+                            <td>
+                                <span class="status-badge pending">
+                                    <span class="status-dot"></span>
+                                    En attente
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon alimentation">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                    <span>Restaurant</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">180 DH</span></td>
+                            <td><span class="category-badge alimentation">Alimentation</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Yassine&background=14B8A6&color=fff" alt="Yassine">
+                                    <span>Yassine</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">04/02/2024</span></td>
+                            <td>
+                                <span class="status-badge paid">
+                                    <span class="status-dot"></span>
+                                    Payé
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon loisirs">
+                                        <i class="fas fa-film"></i>
+                                    </div>
+                                    <span>Cinéma</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">120 DH</span></td>
+                            <td><span class="category-badge loisirs">Loisirs</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Omar&background=8B5CF6&color=fff" alt="Omar">
+                                    <span>Omar</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">02/02/2024</span></td>
+                            <td>
+                                <span class="status-badge paid">
+                                    <span class="status-dot"></span>
+                                    Payé
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <div class="expense-title">
+                                    <div class="expense-icon services">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                    <span>Eau</span>
+                                </div>
+                            </td>
+                            <td><span class="amount">250 DH</span></td>
+                            <td><span class="category-badge services">Services</span></td>
+                            <td>
+                                <div class="payer-info">
+                                    <img class="payer-avatar" src="https://ui-avatars.com/api/?name=Sarah&background=EC4899&color=fff" alt="Sarah">
+                                    <span>Sarah</span>
+                                </div>
+                            </td>
+                            <td><span class="date-cell">01/02/2024</span></td>
+                            <td>
+                                <span class="status-badge overdue">
+                                    <span class="status-dot"></span>
+                                    En retard
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-action btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="pagination">
+                    <div class="pagination-info">
+                        Affichage 1-8 sur 12 dépenses
+                    </div>
+                    <div class="pagination-buttons">
+                        <button class="pagination-btn" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="pagination-btn active">1</button>
+                        <button class="pagination-btn">2</button>
+                        <button class="pagination-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
 
         </div>
-    </div>
-
-    <!-- <script>
-        // Set today's date as default
-        const dateInput = document.getElementById('expenseDate');
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.value = today;
-
-        // Form validation
-        const form = document.getElementById('expenseForm');
-        const titleInput = document.getElementById('expenseTitle');
-        const amountInput = document.getElementById('expenseAmount');
-        const dateInputField = document.getElementById('expenseDate');
-        const categorySelect = document.getElementById('expenseCategory');
-        const payerSelect = document.getElementById('expensePayer');
-        const successMessage = document.getElementById('successMessage');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            let isValid = true;
-
-            // Validate title
-            if (titleInput.value.trim() === '') {
-                titleInput.classList.add('error');
-                document.getElementById('titleError').classList.add('show');
-                isValid = false;
-            } else {
-                titleInput.classList.remove('error');
-                document.getElementById('titleError').classList.remove('show');
-            }
-
-            // Validate amount
-            if (amountInput.value === '' || parseFloat(amountInput.value) <= 0) {
-                amountInput.classList.add('error');
-                document.getElementById('amountError').classList.add('show');
-                isValid = false;
-            } else {
-                amountInput.classList.remove('error');
-                document.getElementById('amountError').classList.remove('show');
-            }
-
-            // Validate date
-            if (dateInputField.value === '') {
-                dateInputField.classList.add('error');
-                document.getElementById('dateError').classList.add('show');
-                isValid = false;
-            } else {
-                dateInputField.classList.remove('error');
-                document.getElementById('dateError').classList.remove('show');
-            }
-
-            // Validate category
-            if (categorySelect.value === '') {
-                categorySelect.classList.add('error');
-                document.getElementById('categoryError').classList.add('show');
-                isValid = false;
-            } else {
-                categorySelect.classList.remove('error');
-                document.getElementById('categoryError').classList.remove('show');
-            }
-
-            // Validate payer
-            if (payerSelect.value === '') {
-                payerSelect.classList.add('error');
-                document.getElementById('payerError').classList.add('show');
-                isValid = false;
-            } else {
-                payerSelect.classList.remove('error');
-                document.getElementById('payerError').classList.remove('show');
-            }
-
-            if (isValid) {
-                // Add loading state
-                const submitBtn = form.querySelector('.btn-primary');
-                submitBtn.classList.add('loading');
-                submitBtn.querySelector('span').textContent = 'Ajout en cours...';
-
-                // Simulate form submission
-                setTimeout(() => {
-                    submitBtn.classList.remove('loading');
-                    submitBtn.querySelector('span').textContent = 'Ajouter la dépense';
-                    successMessage.classList.add('show');
-                    form.reset();
-                    dateInput.value = today;
-                    
-                    // Remove success message after 5 seconds
-                    setTimeout(() => {
-                        successMessage.classList.remove('show');
-                    }, 5000);
-                }, 1500);
-            }
-        });
-
-        // Real-time validation
-        titleInput.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                this.classList.remove('error');
-                document.getElementById('titleError').classList.remove('show');
-            }
-        });
-
-        amountInput.addEventListener('input', function() {
-            if (this.value !== '' && parseFloat(this.value) > 0) {
-                this.classList.remove('error');
-                document.getElementById('amountError').classList.remove('show');
-            }
-        });
-
-        dateInputField.addEventListener('change', function() {
-            if (this.value !== '') {
-                this.classList.remove('error');
-                document.getElementById('dateError').classList.remove('show');
-            }
-        });
-
-        categorySelect.addEventListener('change', function() {
-            if (this.value !== '') {
-                this.classList.remove('error');
-                document.getElementById('categoryError').classList.remove('show');
-            }
-        });
-
-        payerSelect.addEventListener('change', function() {
-            if (this.value !== '') {
-                this.classList.remove('error');
-                document.getElementById('payerError').classList.remove('show');
-            }
-        });
-    </script> -->
+    </main>
 
 </body>
 </html>

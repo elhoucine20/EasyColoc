@@ -7,10 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class User_Colocation extends Model
 {
     //
+    protected $table='user_colocation';
     protected $fillable = [
-        'type',
         'joined_at',
-        'left_at',
         'user_id',
         'colocation_id',
     ];

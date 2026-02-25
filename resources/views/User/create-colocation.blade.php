@@ -439,7 +439,7 @@
                 <span>ColoSpace</span>
             </a>
             
-            <a href="#" class="navbar-back">
+            <a href="{{route('colocation.index')}}" class="navbar-back">
                 <i class="fas fa-arrow-left"></i>
                 <span>Retour</span>
             </a>
@@ -452,10 +452,10 @@
             
             <!-- Success Message (Hidden by default) -->
             <div class="success-message" id="successMessage">
-                <div class="success-icon">
-                    <i class="fas fa-check"></i>
-                </div>
                 <span class="success-text">Colocation créée avec succès !</span>
+                <!-- <div class="success-icon">
+                    <i class="fas fa-check"></i>
+                </div> -->
             </div>
 
             <!-- Form Header -->
@@ -468,8 +468,10 @@
             </div>
 
             <!-- Form -->
-            <form class="colocation-form" id="colocationForm">
+            <form action="{{route('colocation.store')}}" method="post" class="colocation-form" id="colocationForm">
                 
+            @csrf
+            @method('POST')
                 <!-- Nom de la colocation -->
                 <div class="form-group">
                     <label class="form-label" for="colocationName">
@@ -477,7 +479,8 @@
                         Nom de la colocation
                         <span class="required">*</span>
                     </label>
-                    <input 
+                    <input
+                        value="{{old('colocationName')}}"
                         type="text" 
                         id="colocationName" 
                         name="colocationName" 
@@ -486,29 +489,17 @@
                         required
                         maxlength="50"
                     >
+                @error('colocationName')
+                <div style="color: #e74c3c;">{{$message}}
+                </div>
+                @enderror
                     <span class="error-message" id="nameError">Veuillez entrer un nom de colocation</span>
                     <span class="form-hint">Choisissez un nom unique et mémorable pour votre colocation</span>
                 </div>
 
-                <!-- Adresse (Optional) -->
-                <div class="form-group">
-                    <label class="form-label" for="colocationAddress">
-                        <i class="fas fa-map-marker-alt"></i>
-                        Adresse
-                    </label>
-                    <input 
-                        type="text" 
-                        id="colocationAddress" 
-                        name="colocationAddress" 
-                        class="form-input" 
-                        placeholder="Ex: Casablanca, Maroc"
-                        maxlength="100"
-                    >
-                    <span class="form-hint">L'adresse de votre colocation (optionnel)</span>
-                </div>
 
                 <!-- Description -->
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="form-label" for="colocationDescription">
                         <i class="fas fa-align-left"></i>
                         Description
@@ -526,10 +517,10 @@
                     <span class="character-count">
                         <span id="charCount">0</span>/500 caractères
                     </span>
-                </div>
+                </div> -->
 
                 <!-- Number of Members -->
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label class="form-label" for="memberCount">
                         <i class="fas fa-users"></i>
                         Nombre de colocataires
@@ -546,14 +537,17 @@
                         required
                     >
                     <span class="form-hint">Combien de personnes vivent dans cette colocation ?</span>
-                </div>
+                </div> -->
 
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary">
+                    <a href="{{route('colocation.index')}}">
+                                  <button type="button" class="btn btn-secondary">
                         <i class="fas fa-times"></i>
                         <span>Annuler</span>
                     </button>
+                    </a>
+          
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-check"></i>
                         <span>Créer la colocation</span>
@@ -563,7 +557,7 @@
             </form>
 
             <!-- Info Card -->
-            <div class="info-card">
+            <!-- <div class="info-card">
                 <div class="info-title">
                     <i class="fas fa-lightbulb"></i>
                     Conseils
@@ -582,12 +576,12 @@
                         <span>Vous pourrez inviter des colocataires après la création</span>
                     </li>
                 </ul>
-            </div>
+            </div> -->
 
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         // Character counter
         const textarea = document.getElementById('colocationDescription');
         const charCount = document.getElementById('charCount');
@@ -667,7 +661,7 @@
                 descError.classList.remove('show');
             }
         });
-    </script>
+    </script> -->
 
 </body>
 </html>

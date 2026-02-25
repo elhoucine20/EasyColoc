@@ -14,9 +14,9 @@ return new class extends Migration
         //
             Schema::create('user_colocation', function (Blueprint $table) {
             $table->id();
-            $table->enum('type',['member','owner']);
+            $table->enum('type',['member','owner'])->default('owner');
             $table->date('joined_at');
-            $table->date('left_at');
+            $table->date('left_at')->nullable();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('colocation_id')->constrained()->cascadeOnDelete();
             $table->timestamps();

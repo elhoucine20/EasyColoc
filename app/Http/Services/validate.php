@@ -13,5 +13,16 @@ class Validate{
         //    'role'=>'required|string',
        ]);
    }
+   public static function ValidateColocationName($request){
+      return $request->validate([
+         'colocationName'=>'required|string|between:3,30'
+      ]);
+   }
+   public static function validateNameCategorie($request){
+      return $request->validate([
+         'name'=>'required|string|between:3,30',
+         'colocation_id'=>'required',
+      ]);
+   } 
 }
 ?>

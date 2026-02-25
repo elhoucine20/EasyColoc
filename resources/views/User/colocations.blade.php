@@ -5,7 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mes Colocations - ColocApp</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
+
+
+    /* *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; } */
+
+    :root {
+
+      --teal:         #14B8A6;
+
+    }
         * {
             margin: 0;
             padding: 0;
@@ -532,6 +542,32 @@
                 font-size: 0.85rem;
             }
         }
+
+            .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 500;
+    }
+            .badge-active {
+      background: rgba(20,184,166,.15);
+      color: var(--teal);
+      border: 1px solid rgba(20,184,166,.25);
+    }
+        .badge-active::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--teal);
+      animation: pulse 1.8s infinite;
+    }
+    .badge-cancelled {
+      background: rgba(244,63,94,.1);
+      color: #F43F5E;
+      border: 1px solid rgba(244,63,94,.2);
+    }
+
     </style>
 </head>
 <body>
@@ -546,7 +582,7 @@
         </div>
         
         <nav class="sidebar-nav">
-            <a href="#" class="nav-item">
+            <a href="{{route('dashbord-user')}}" class="nav-item">
                 <i class="fas fa-chart-line"></i>
                 <span>Dashboard</span>
             </a>
@@ -620,21 +656,38 @@
                         <h1 class="page-title">Mes Colocations</h1>
                         <p class="page-subtitle">Gérez toutes vos colocations en un seul endroit</p>
                     </div>
-                    <button class="btn-create">
+                    <a href="{{route('colocation.create')}}"><button class="btn-create">
                         <i class="fas fa-plus"></i>
                         <span>Créer une colocation</span>
-                    </button>
+                        </button>
+                   </a>
+                   
+                   <a href="{{route('categorie.create')}}">
+                      <button class="btn-create">
+                        <i class="fas fa-plus"></i>
+
+                      Créer une cagtegorie
+                      </button>
+                   </a>
+                   
                 </div>
 
                 <!-- Colocations Grid -->
                 <div class="colocations-grid">
                     
                     <!-- Colocation Card 1 - Owner -->
+                     @if($colocations)
+                     @foreach($colocations as $colocation)
                     <div class="colocation-card">
                         <div class="card-header">
                             <div class="card-icon">
                                 <i class="fas fa-building"></i>
                             </div>
+                            @if($colocation->statu == "active")
+                             <span class="badge badge-active">{{$colocation->statu}}</span>
+                             @else
+                             <span class="badge badge-cancelled">{{$colocation->statu}}</span>
+                             @endif
                             <span class="owner-badge">
                                 <i class="fas fa-crown"></i>
                                 Propriétaire
@@ -642,7 +695,7 @@
                         </div>
                         
                         <div class="card-body">
-                            <h3 class="colocation-name">Appartement Centre Ville</h3>
+                            <h3 class="colocation-name">{{$colocation->name}}</h3>
                             <div class="colocation-info">
                                 <div class="info-item">
                                     <i class="fas fa-users"></i>
@@ -655,171 +708,28 @@
                             </div>
                         </div>
                         
-                        <div class="card-footer">
-                            <button class="btn-details">
-                                <span>Voir détails</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
+                        <div style="display: flex; justify-content:space-around" class="card-footer">
+                                <form action="{{route('colocation.update',$colocation->id)}}" method="POST" >
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn-details">
+                                        Annuleer 
+                                    </button>
+                                </form>
 
-                    <!-- Colocation Card 2 - Member -->
-                    <div class="colocation-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-building"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="card-body">
-                            <h3 class="colocation-name">Studio Maarif</h3>
-                            <div class="colocation-info">
-                                <div class="info-item">
-                                    <i class="fas fa-users"></i>
-                                    <span class="members-count">2 membres</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span class="location">Casablanca</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-footer">
+                          <a href="{{route('colocation.show',$colocation)}}">
                             <button class="btn-details">
-                                <span>Voir détails</span>
+                                <span>Entrée </span>
                                 <i class="fas fa-arrow-right"></i>
                             </button>
-                        </div>
-                    </div>
+                          </a>
 
-                    <!-- Colocation Card 3 - Owner -->
-                    <div class="colocation-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <span class="owner-badge">
-                                <i class="fas fa-crown"></i>
-                                Propriétaire
-                            </span>
-                        </div>
-                        
-                        <div class="card-body">
-                            <h3 class="colocation-name">Villa Californie</h3>
-                            <div class="colocation-info">
-                                <div class="info-item">
-                                    <i class="fas fa-users"></i>
-                                    <span class="members-count">6 membres</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span class="location">Casablanca</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-footer">
-                            <button class="btn-details">
-                                <span>Voir détails</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
                         </div>
                     </div>
+                    @endforeach
+                    @endif
 
-                    <!-- Colocation Card 4 - Member -->
-                    <div class="colocation-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-building"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="card-body">
-                            <h3 class="colocation-name">Résidence Ain Diab</h3>
-                            <div class="colocation-info">
-                                <div class="info-item">
-                                    <i class="fas fa-users"></i>
-                                    <span class="members-count">3 membres</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span class="location">Casablanca</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-footer">
-                            <button class="btn-details">
-                                <span>Voir détails</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Colocation Card 5 - Member -->
-                    <div class="colocation-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-building"></i>
-                            </div>
-                        </div>
-                        
-                        <div class="card-body">
-                            <h3 class="colocation-name">Appartement Gauthier</h3>
-                            <div class="colocation-info">
-                                <div class="info-item">
-                                    <i class="fas fa-users"></i>
-                                    <span class="members-count">5 membres</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span class="location">Casablanca</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-footer">
-                            <button class="btn-details">
-                                <span>Voir détails</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Colocation Card 6 - Owner -->
-                    <div class="colocation-card">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <span class="owner-badge">
-                                <i class="fas fa-crown"></i>
-                                Propriétaire
-                            </span>
-                        </div>
-                        
-                        <div class="card-body">
-                            <h3 class="colocation-name">Maison Bourgogne</h3>
-                            <div class="colocation-info">
-                                <div class="info-item">
-                                    <i class="fas fa-users"></i>
-                                    <span class="members-count">8 membres</span>
-                                </div>
-                                <div class="info-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span class="location">Casablanca</span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="card-footer">
-                            <button class="btn-details">
-                                <span>Voir détails</span>
-                                <i class="fas fa-arrow-right"></i>
-                            </button>
-                        </div>
-                    </div>
+ 
 
                 </div>
 
