@@ -491,53 +491,15 @@
                     >
                 @error('colocationName')
                 <div style="color: #e74c3c;">{{$message}}
-                </div>
-                @enderror
+                    </div>
+                    @enderror
+                    @if(session('error'))
+                    <div style="color: #e74c3c;">{{session('error')}}
+                        </div>
+                        @endif
                     <span class="error-message" id="nameError">Veuillez entrer un nom de colocation</span>
                     <span class="form-hint">Choisissez un nom unique et mémorable pour votre colocation</span>
                 </div>
-
-
-                <!-- Description -->
-                <!-- <div class="form-group">
-                    <label class="form-label" for="colocationDescription">
-                        <i class="fas fa-align-left"></i>
-                        Description
-                        <span class="required">*</span>
-                    </label>
-                    <textarea 
-                        id="colocationDescription" 
-                        name="colocationDescription" 
-                        class="form-textarea" 
-                        placeholder="Décrivez votre colocation : nombre de chambres, équipements, règles de vie..."
-                        required
-                        maxlength="500"
-                    ></textarea>
-                    <span class="error-message" id="descError">Veuillez entrer une description</span>
-                    <span class="character-count">
-                        <span id="charCount">0</span>/500 caractères
-                    </span>
-                </div> -->
-
-                <!-- Number of Members -->
-                <!-- <div class="form-group">
-                    <label class="form-label" for="memberCount">
-                        <i class="fas fa-users"></i>
-                        Nombre de colocataires
-                        <span class="required">*</span>
-                    </label>
-                    <input 
-                        type="number" 
-                        id="memberCount" 
-                        name="memberCount" 
-                        class="form-input" 
-                        placeholder="Ex: 4"
-                        min="1"
-                        max="20"
-                        required
-                    >
-                    <span class="form-hint">Combien de personnes vivent dans cette colocation ?</span>
-                </div> -->
 
                 <!-- Form Actions -->
                 <div class="form-actions">
@@ -556,112 +518,7 @@
 
             </form>
 
-            <!-- Info Card -->
-            <!-- <div class="info-card">
-                <div class="info-title">
-                    <i class="fas fa-lightbulb"></i>
-                    Conseils
-                </div>
-                <ul class="info-list">
-                    <li>
-                        <i class="fas fa-check-circle"></i>
-                        <span>Choisissez un nom descriptif pour votre colocation</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-check-circle"></i>
-                        <span>Ajoutez une description détaillée pour les futurs membres</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-check-circle"></i>
-                        <span>Vous pourrez inviter des colocataires après la création</span>
-                    </li>
-                </ul>
-            </div> -->
-
         </div>
     </div>
-
-    <!-- <script>
-        // Character counter
-        const textarea = document.getElementById('colocationDescription');
-        const charCount = document.getElementById('charCount');
-
-        textarea.addEventListener('input', function() {
-            charCount.textContent = this.value.length;
-        });
-
-        // Form validation
-        const form = document.getElementById('colocationForm');
-        const nameInput = document.getElementById('colocationName');
-        const descInput = document.getElementById('colocationDescription');
-        const nameError = document.getElementById('nameError');
-        const descError = document.getElementById('descError');
-        const successMessage = document.getElementById('successMessage');
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            let isValid = true;
-
-            // Validate name
-            if (nameInput.value.trim() === '') {
-                nameInput.classList.add('error');
-                nameError.classList.add('show');
-                isValid = false;
-            } else {
-                nameInput.classList.remove('error');
-                nameInput.classList.add('success');
-                nameError.classList.remove('show');
-            }
-
-            // Validate description
-            if (descInput.value.trim() === '') {
-                descInput.classList.add('error');
-                descError.classList.add('show');
-                isValid = false;
-            } else {
-                descInput.classList.remove('error');
-                descInput.classList.add('success');
-                descError.classList.remove('show');
-            }
-
-            if (isValid) {
-                // Add loading state
-                const submitBtn = form.querySelector('.btn-primary');
-                submitBtn.classList.add('loading');
-                submitBtn.querySelector('span').textContent = 'Création en cours...';
-
-                // Simulate form submission
-                setTimeout(() => {
-                    submitBtn.classList.remove('loading');
-                    submitBtn.querySelector('span').textContent = 'Créer la colocation';
-                    successMessage.classList.add('show');
-                    form.reset();
-                    charCount.textContent = '0';
-                    
-                    // Remove success message after 5 seconds
-                    setTimeout(() => {
-                        successMessage.classList.remove('show');
-                    }, 5000);
-                }, 1500);
-            }
-        });
-
-        // Real-time validation
-        nameInput.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                this.classList.remove('error');
-                nameError.classList.remove('show');
-            }
-        });
-
-        descInput.addEventListener('input', function() {
-            if (this.value.trim() !== '') {
-                this.classList.remove('error');
-                descError.classList.remove('show');
-            }
-        });
-    </script> -->
-
 </body>
 </html>

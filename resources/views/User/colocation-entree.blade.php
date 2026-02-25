@@ -69,15 +69,18 @@
     }
 
     .btn-logout {
-      padding: 8px 20px;
+      padding: 10px 30px;
       border: 1px solid var(--border);
       border-radius: 8px;
-      background: transparent;
-      color: var(--gray);
+      /* background: transparent; */
+      /* color: var(--gray); */
+      color: var(--white);
       font-family: 'DM Sans', sans-serif;
       font-size: .85rem;
       cursor: pointer;
       transition: all .2s;
+      background-color: red;
+      opacity: 0.5;
     }
 
     .btn-logout:hover {
@@ -153,7 +156,7 @@
     }
 
     .colo-name {
-      font-family: 'Syne', sans-serif;
+      /* font-family: sans-serif; */
       font-size: 1.75rem;
       font-weight: 800;
       color: var(--white);
@@ -385,6 +388,23 @@
       nav { padding: 0 16px; }
       .nav-center { font-size: .82rem; }
     }
+
+            .navbar-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            color: #94A3B8;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar-back:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
   </style>
 </head>
 <body>
@@ -396,44 +416,81 @@
     <span></span>
     Sunset Loft 4B
   </div>
-  <button class="btn-logout">Logout</button>
+  <div style="display: flex;">
+
+    <a href="{{route('colocation.index')}}" class="navbar-back">
+      <i class="fas fa-arrow-left"></i>
+      <span>Retour</span>
+  </a>
+<a href="{{route('logout')}}"><button class="btn-logout">Logout</button></a>
+  </div>
 </nav>
 
 <!-- MAIN -->
 <main>
+  <!-- categories -->
+  <!-- <div class="member-list">
 
+    @if($categories)
+    @foreach($categories as $categorie)
+    <div class="member-row">
+      <div class="avatar">YA</div>
+      <div class="member-info">
+        <div class="member-name">{{$categorie->name}}</div>
+        <div class="member-email">yassine@mail.com</div>
+      </div>
+      @endforeach
+      @endif
+    </div>
+  </div> -->
+<!-- end categories -->
   <!-- 1. OVERVIEW -->
   <div class="card overview-card card-full">
     <div class="overview-top">
       <div>
-        <div class="colo-name">Sunset Loft 4B</div>
+        <div class="colo-name">{{$Colocation->name}}</div>
         <div style="margin-top:8px; color:var(--gray); font-size:.88rem;">📍 12 Rue de la Paix, Casablanca</div>
       </div>
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-        <a href="">
-      <button class="btn btn-primary">Add depense</button>
-        </a>
-        <span class="badge badge-active">Active</span>
+        <div>
+
+          <a href="{{route('categorie.show',$Colocation->id)}}">
+        <button class="btn btn-primary">Créer une cagtegorie</button>
+          </a>
+          <a href="">
+        <button class="btn btn-primary">Add depense</button>
+          </a>
+        </div>
+          @if($Colocation->statu == "active")
+           <span class="badge badge-active">{{$Colocation->statu}}</span>
+           @else
+           <span class="badge badge-cancelled">{{$Colocation->statu}}</span>
+           @endif
         <span style="font-size:.78rem; color:var(--gray);">Since Jan 2025</span>
       </div>
     </div>
 
+    <h3>Les Categories</h3>
     <div class="stats-row">
-      <div class="stat-box">
+          @if($categories)
+    @foreach($categories as $categorie)
+      <!-- <div class="stat-box">
         <div class="stat-label">Total Members</div>
-        <div class="stat-value">4</div>
+        <div class="stat-value"></div>
         <div class="stat-sub">2 owners · 2 members</div>
       </div>
       <div class="stat-box">
         <div class="stat-label">My Balance</div>
         <div class="stat-value blue">−320 MAD</div>
         <div class="stat-sub">You owe this month</div>
-      </div>
+      </div> -->
       <div class="stat-box">
         <div class="stat-label">Shared Expenses</div>
-        <div class="stat-value teal">8,450 MAD</div>
-        <div class="stat-sub">All time total</div>
+        <div class="stat-value teal">{{$categorie->name}}</div>
+        <div class="stat-sub">{{$categorie->colocation->name}}</div>
       </div>
+      @endforeach
+      @endif
     </div>
   </div>
 
@@ -480,7 +537,6 @@
           <span class="rep-score">★ 4.2</span>
         </div>
       </div>
-
       <div class="member-row">
         <div class="avatar" style="background:linear-gradient(135deg,#F43F5E,#FBBF24)">NM</div>
         <div class="member-info">
@@ -495,6 +551,8 @@
 
     </div>
   </div>
+  
+
 
   <!-- 3. EXPENSES -->
   <div class="card">
@@ -521,6 +579,7 @@
       <button class="btn btn-primary">View Expenses →</button>
     </div>
   </div>
+
 
   <!-- 4. SETTLEMENT -->
   <div class="card card-full">
@@ -574,7 +633,7 @@
     </div>
   </div>
 
-</main>
 
+</main>
 </body>
 </html>

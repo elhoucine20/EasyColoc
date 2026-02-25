@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\Validate;
+use App\Models\Categorie;
 use App\Models\Colocation;
 use App\Models\User_Colocation;
 use Illuminate\Http\Request;
@@ -20,7 +21,8 @@ class ColocationController extends Controller
     public function index()
     {
         //
-        $colocations = Colocation::all();
+        // $colocations = Colocation::all();
+        $colocations = Auth::user()->colocation;
         return view('User/colocations',compact('colocations'));
     }
 
@@ -41,8 +43,14 @@ class ColocationController extends Controller
     {
         //
         // dd(Auth::user()->id);
+        
         if (Validate::ValidateColocationName($request)) {
             # code...
+            if (Validate::ColocationsStatuIsActive(Auth::user())) 
+                return back()->with('error','impossible creation nouveaux colocation ! déja un colocation active');
+            //    dd('tout les colocation is inactive');
+
+            
             try {
                 DB::beginTransaction();
 
@@ -77,8 +85,10 @@ class ColocationController extends Controller
     public function show(Colocation $Colocation)
     {
         //
-        $colocation = $Colocation;
-        return view('User/colocation-entree',compact('colocation'));
+        // dd($Colocation);
+        $categories = Categorie::where('colocation_id','=',$Colocation->id)->get();
+
+        return view('User/colocation-entree',compact('Colocation','categories'));
     }
 
     /**
@@ -96,14 +106,10 @@ class ColocationController extends Controller
      */
     public function update(Request $request, Colocation $Colocation)
     {
-        //
-                // dd($id);
-        // $colocation = Colocation::findOrFail($Colocation->id);
         // dd($colocation);
         $Colocation->update([
             'statu'=>"Inactive",
         ]);
-        // return to_route('colocation.index');
         
         return $this->index();
     }

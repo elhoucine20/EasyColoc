@@ -605,7 +605,7 @@
         </nav>
         
         <div class="sidebar-footer">
-            <a href="#" class="nav-item logout">
+            <a href="{{route('logout')}}" class="nav-item logout">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </a>
@@ -660,14 +660,6 @@
                         <i class="fas fa-plus"></i>
                         <span>Créer une colocation</span>
                         </button>
-                   </a>
-                   
-                   <a href="{{route('categorie.create')}}">
-                      <button class="btn-create">
-                        <i class="fas fa-plus"></i>
-
-                      Créer une cagtegorie
-                      </button>
                    </a>
                    
                 </div>

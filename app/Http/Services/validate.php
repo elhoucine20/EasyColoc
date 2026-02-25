@@ -1,6 +1,10 @@
 <?php
 namespace App\Http\Services;
 
+use Illuminate\Support\Facades\Auth;
+
+use function Laravel\Prompts\error;
+
 class Validate{
 
 
@@ -24,5 +28,11 @@ class Validate{
          'colocation_id'=>'required',
       ]);
    } 
+   public static function ColocationsStatuIsActive($user){
+         $IsActive = $user->colocation()->where('colocations.statu','=','active')->exists();
+            if ($IsActive) {
+               return back();
+            }
+   }
 }
 ?>

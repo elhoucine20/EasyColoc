@@ -25,8 +25,9 @@ class CategorieController extends Controller
     public function create()
     {
         //
-        $colocations = Colocation::all();
-        return view('User/create-categorie',compact('colocations'));
+        // $colocations = Colocation::all();
+        // dd($idColocation);
+        // return view('User/create-categorie',compact('idColocation'));
     }
 
     /**
@@ -35,6 +36,7 @@ class CategorieController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->post());
         if ($request) {
             # code...
             Validate::validateNameCategorie($request);
@@ -53,9 +55,12 @@ class CategorieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $idColocation)
     {
         //
+        // dd($idColocation);
+        return view('User/create-categorie',compact('idColocation'));
+
     }
 
     /**

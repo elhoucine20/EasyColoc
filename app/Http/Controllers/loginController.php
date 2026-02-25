@@ -83,4 +83,10 @@ class loginController extends Controller
     {
         //
     }
+
+        public function Logout()
+    {
+        Auth::logout();
+        return $this->index();
+    }
 }

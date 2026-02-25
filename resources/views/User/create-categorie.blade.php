@@ -314,9 +314,74 @@
         font-size: 1.3rem;
       }
     }
+            /* Navbar */
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100vw;
+        }
+
+        .navbar-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .navbar-logo i {
+            color: #3B82F6;
+            font-size: 1.75rem;
+        }
+
+        .navbar-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            color: #94A3B8;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar-back:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
+
   </style>
 </head>
 <body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="#" class="navbar-logo">
+                <i class="fas fa-home"></i>
+                <span>ColoSpace</span>
+            </a>
+            
+            <a href="{{route('colocation.index')}}" class="navbar-back">
+                <i class="fas fa-arrow-left"></i>
+                <span>Retour</span>
+            </a>
+        </div>
+    </nav>
 
   <div class="brand">ColoSpace</div>
 
@@ -332,6 +397,8 @@
     @csrf
      @method('POST')
     <div class="field">
+        <input hidden type="text" name="colocation_id" value="{{$idColocation}}">
+
         <label for="cat-name">
           Nom de la catégorie
           <span class="label-hint">requis</span>
@@ -346,24 +413,8 @@
         />
       </div>
 
-          <div class="field">
-        <label for="cat-name">
-          colocation
-          <span class="label-hint">requis</span>
-        </label>
-        <select name="colocation_id" id="">
-          <option value="">select colocation</option>
-          @foreach($colocations as $colocation)
-          <option value="{{$colocation->id}}">{{$colocation->name}}</option>
-            @endforeach
-        </select>
-
-      </div>
-
-
-
       <div class="btn-group">
-        <a href=""><button type="button" class="btn btn-cancel">Annuler</button></a>
+        <a href="{{route('colocation.index')}}"><button type="button" class="btn btn-cancel">Annuler</button></a>
         
         <button type="submit" class="btn btn-primary"> Créer la catégorie</button>
       </div>
