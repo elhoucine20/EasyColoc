@@ -653,10 +653,15 @@
                 <!-- Page Header -->
                 <div class="page-header">
                     <div class="header-left">
+                     @if($colocations->isNotEmpty())
                         <h1 class="page-title">Mes Colocations</h1>
                         <p class="page-subtitle">Gérez toutes vos colocations en un seul endroit</p>
+                        @else
+                        <h1 class="page-title">Aucun Colocation</h1>
+                        @endif
                     </div>
-                    <a href="{{route('colocation.create')}}"><button class="btn-create">
+                    <a href="{{route('colocation.create')}}">
+                        <button class="btn-create">
                         <i class="fas fa-plus"></i>
                         <span>Créer une colocation</span>
                         </button>

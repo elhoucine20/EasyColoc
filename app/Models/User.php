@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -26,6 +27,10 @@ class User extends Authenticatable
 
     public function colocation():BelongsToMany{
         return $this->belongsToMany(Colocation::class,'user_colocation');
+    }
+
+    public function depense():HasMany{
+        return $this->hasMany(Depense::class);
     }
 
     /**
@@ -52,4 +57,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+
+
+    public function colocations()
+    {
+        return $this->belongsToMany(Colocation::class,'user_colocation')
+        ->withPivot('type','joined_at', 'left_at')->withTimestamps();
+    }
+
+
+    // public function ownedColocations()
+    // {
+    // return $this->hasMany(Colocation::class, 'owner_id');
+    // } 
+    
+
+    // public function categories()
+    // {
+    //     return $this->hasMany(Category::class);
+    // }
+
 }

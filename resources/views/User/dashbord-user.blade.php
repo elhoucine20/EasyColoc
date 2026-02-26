@@ -684,7 +684,7 @@ body {
                 <div class="user-profile">
                     <img src="https://ui-avatars.com/api/?name=John+Doe&background=3B82F6&color=fff" alt="User">
                     <div class="user-info">
-                        <span class="user-name">John Doe</span>
+                        <span class="user-name">{{auth()->user()->name}}</span>
                         <span class="user-role">Premium Member</span>
                     </div>
                 </div>
@@ -697,7 +697,7 @@ body {
             <!-- Welcome Card -->
             <div class="welcome-card">
                 <div class="welcome-content">
-                    <h1>Welcome back, John! 👋</h1>
+                    <h1>Welcome back, {{auth()->user()->name}} 👋</h1>
                     <p>Here's what's happening with your colocations today.</p>
                 </div>
                 <div class="welcome-illustration">

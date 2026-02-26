@@ -45,5 +45,6 @@ class Validate{
 
       ]);
    } 
+   // public function cree()
 }
 ?>

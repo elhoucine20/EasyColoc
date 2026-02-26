@@ -46,9 +46,8 @@
     }
 
     .nav-brand {
-      font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: 1.25rem;
+      font-size: 2.25rem;
       color: var(--blue);
       letter-spacing: -.02em;
     }
@@ -124,14 +123,6 @@
     .card-header {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 24px;
-    }
-
-    .card-title {
-      font-family: 'Syne', sans-serif;
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--white);
-      letter-spacing: -.01em;
     }
 
     .card-icon {
@@ -303,7 +294,7 @@
 
     .expense-label { font-size: .78rem; color: var(--gray); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .05em; }
     .expense-amount {
-      font-family: 'Syne', sans-serif;
+      /* font-family: 'Syne', sans-serif; */
       font-size: 1.4rem;
       font-weight: 700;
       color: var(--white);
@@ -425,7 +416,12 @@
 
 <!-- NAVBAR -->
 <nav>
-  <div class="nav-brand">ColoSpace</div>
+  <div class="nav-brand">{{$Colocation->name}}</div>
+            @if($Colocation->statu == "active")
+           <span class="badge badge-active">{{$Colocation->statu}}</span>
+           @else
+           <span class="badge badge-cancelled">{{$Colocation->statu}}</span>
+           @endif
   <div class="nav-center">
     <span></span>
     Sunset Loft 4B
@@ -442,27 +438,12 @@
 
 <!-- MAIN -->
 <main>
-  <!-- categories -->
-  <!-- <div class="member-list">
-
-    @if($categories)
-    @foreach($categories as $categorie)
-    <div class="member-row">
-      <div class="avatar">YA</div>
-      <div class="member-info">
-        <div class="member-name">{{$categorie->name}}</div>
-        <div class="member-email">yassine@mail.com</div>
-      </div>
-      @endforeach
-      @endif
-    </div>
-  </div> -->
-<!-- end categories -->
   <!-- 1. OVERVIEW -->
   <div class="card overview-card card-full">
     <div class="overview-top">
       <div>
-        <div class="colo-name">{{$Colocation->name}}</div>
+        <div class="colo-name">Les Categories</div>
+
         <div style="margin-top:8px; color:var(--gray); font-size:.88rem;">📍 12 Rue de la Paix, Casablanca</div>
       </div>
       <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
@@ -471,17 +452,9 @@
           <a href="{{route('categorie.show',$Colocation->id)}}">
         <button class="btn btn-primary">Créer une cagtegorie</button>
           </a>
-         @if($categories->isNotEmpty())
-          <a href="{{route('depense.show',$Colocation->id)}}">
-        <button class="btn btn-primary">Add depense</button>
-          </a>
-          @endif
+
         </div>
-          @if($Colocation->statu == "active")
-           <span class="badge badge-active">{{$Colocation->statu}}</span>
-           @else
-           <span class="badge badge-cancelled">{{$Colocation->statu}}</span>
-           @endif
+
         <span style="font-size:.78rem; color:var(--gray);">Since Jan 2025</span>
       </div>
     </div>
@@ -513,8 +486,13 @@
   <div class="card">
 
     <div class="card-header">
-      <div class="card-title">Members</div>
-      <div class="card-icon icon-blue">👥</div>
+      <h2>Members</h2>
+      <div class="card-icon icon-blue">
+        <a href="{{route('invitation.show',$Colocation->id)}}">
+        <button class="btn btn-primary">Inviter👥</button>
+          </a>
+          
+        </div>
     </div>
     <div class="member-list">
          @if($users)
@@ -526,13 +504,17 @@
           <div class="member-email">{{$user->user->email}}</div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
+          @if($user->type == 'owner')
           <span class="role-badge role-owner">{{$user->type}}</span>
-          <span class="rep-score">★ 4.9</span>
+          @elseif($user->type == 'member')
+          <span class="role-badge role-member">{{$user->type}}</span>
+          @endif
+          <!-- <span class="rep-score">★ 4.9</span> -->
         </div>
       </div>
-        @endforeach
-        @endif
-
+      @endforeach
+      @endif
+      
       <div class="member-row">
         <div class="avatar" style="background:linear-gradient(135deg,#F43F5E,#FBBF24)">NM</div>
         <div class="member-info">
@@ -554,26 +536,34 @@
   <!-- 3. EXPENSES -->
   <div class="card">
     <div class="card-header">
-      <div class="card-title">Expenses Summary</div>
+      <h2 >Expenses </h2>
       <div class="card-icon icon-gold">💸</div>
     </div>
 
     <div class="expense-grid">
+      @foreach($Colocation->depense  as $depense)
       <div class="expense-box">
-        <div class="expense-label">Total</div>
-        <div class="expense-amount">8,450 MAD</div>
+        <h3>{{$depense->title}}</h3>
+
+        <!-- <div style="gap:20px"> -->
+        <span class="role-badge role-owner">{{$depense->user->name}}</span>
+        <span style="color:var(--blue);" class="expense-amount">{{$depense->montant}} DH</span>
+        
+
+        <div class="expense-label">{{$depense->date}} </div>
+        <span class="badge role-member">{{$depense->categorie->name}}</span>
       </div>
-      <div class="expense-box">
-        <div class="expense-label">This Month</div>
-        <div class="expense-amount" style="color:var(--blue);">1,280 MAD</div>
-      </div>
+      @endforeach
     </div>
 
-    <div class="divider"></div>
+    <!-- <div class="divider"></div> -->
 
     <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-      <div style="font-size:.84rem; color:var(--gray);">Last added: <span style="color:var(--white);">Groceries — 240 MAD</span></div>
-      <button class="btn btn-primary">View Expenses →</button>
+              @if($categories->isNotEmpty())
+          <a href="{{route('depense.show',$Colocation->id)}}">
+        <button class="btn btn-primary">Add depense</button>
+          </a>
+          @endif
     </div>
   </div>
 
@@ -581,7 +571,7 @@
   <!-- 4. SETTLEMENT -->
   <div class="card card-full">
     <div class="card-header">
-      <div class="card-title">Settlement Summary</div>
+      <h2>Settlement Summary</h2>
       <div class="card-icon icon-rose">⚖️</div>
     </div>
 

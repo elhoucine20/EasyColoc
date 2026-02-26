@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\DepenseController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\userController;
@@ -28,4 +29,8 @@ Route::middleware(userMiddleware::class)->group(function(){
     Route::resource('colocation',ColocationController::class);
     Route::resource('categorie',CategorieController::class);
     Route::resource('depense',DepenseController::class);
+    Route::resource('invitation',InvitationController::class);
+
+    Route::get('invitaion/accept/{token}', [InvitationController::class, 'accept'])->name('invitation.accept');
+    // Route::post('colocation/{colocation}/send', [InvitationController::class, 'send'])->name('invitation.send');
 });

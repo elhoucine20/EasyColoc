@@ -19,7 +19,11 @@ class Depense extends Model
         'payer_id',
         'colocation_id',
     ];
-    public function colocation():BelongsTo{
-        return $this->belongsTo(Colocation::class);
+
+    public function categorie():BelongsTo{
+        return $this->belongsTo(Categorie::class);
+    }
+    public function user():BelongsTo{
+        return $this->belongsTo(User::class,'payer_id');
     }
 }
