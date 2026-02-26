@@ -371,6 +371,17 @@
       background: rgba(20,184,166,.25);
       transform: translateY(-1px);
     }
+    .btn-danger {
+    background: rgba(239, 68, 68, 0.15);
+    color: #EF4444;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+}
+
+.btn-danger:hover {
+    background: rgba(239, 68, 68, 0.25);
+    transform: translateY(-1px);
+}
+
 
     /* ── DIVIDER ─────────────────────────────────── */
     .divider {
@@ -405,6 +416,9 @@
             background: rgba(59, 130, 246, 0.1);
             color: #3B82F6;
         }
+
+
+
   </style>
 </head>
 <body>
@@ -457,9 +471,11 @@
           <a href="{{route('categorie.show',$Colocation->id)}}">
         <button class="btn btn-primary">Créer une cagtegorie</button>
           </a>
-          <a href="">
+         @if($categories->isNotEmpty())
+          <a href="{{route('depense.show',$Colocation->id)}}">
         <button class="btn btn-primary">Add depense</button>
           </a>
+          @endif
         </div>
           @if($Colocation->statu == "active")
            <span class="badge badge-active">{{$Colocation->statu}}</span>
@@ -470,73 +486,53 @@
       </div>
     </div>
 
+    @if($categories->isNotEmpty())
     <h3>Les Categories</h3>
     <div class="stats-row">
-          @if($categories)
     @foreach($categories as $categorie)
-      <!-- <div class="stat-box">
-        <div class="stat-label">Total Members</div>
-        <div class="stat-value"></div>
-        <div class="stat-sub">2 owners · 2 members</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-label">My Balance</div>
-        <div class="stat-value blue">−320 MAD</div>
-        <div class="stat-sub">You owe this month</div>
-      </div> -->
       <div class="stat-box">
         <div class="stat-label">Shared Expenses</div>
         <div class="stat-value teal">{{$categorie->name}}</div>
         <div class="stat-sub">{{$categorie->colocation->name}}</div>
+          <!-- <button class="btn btn-teal">Modifier</button> -->
+            <form method="post" action="{{route('categorie.destroy',$categorie->id)}}">
+             @csrf
+             @method('DELETE')
+              <button type="submit" class="btn btn-danger">supprimer</button>
+            </form>
       </div>
       @endforeach
-      @endif
     </div>
+    @else
+    <h3>Aucun Categoorie</h3>
+    @endif
   </div>
+
 
   <!-- 2. MEMBERS -->
   <div class="card">
+
     <div class="card-header">
       <div class="card-title">Members</div>
       <div class="card-icon icon-blue">👥</div>
     </div>
     <div class="member-list">
-
+         @if($users)
+         @foreach($users as $user)
       <div class="member-row">
         <div class="avatar">YA</div>
         <div class="member-info">
-          <div class="member-name">Yassine Amrani</div>
-          <div class="member-email">yassine@mail.com</div>
+          <div class="member-name">{{$user->user->name}}</div>
+          <div class="member-email">{{$user->user->email}}</div>
         </div>
         <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-          <span class="role-badge role-owner">Owner</span>
+          <span class="role-badge role-owner">{{$user->type}}</span>
           <span class="rep-score">★ 4.9</span>
         </div>
       </div>
+        @endforeach
+        @endif
 
-      <div class="member-row">
-        <div class="avatar" style="background:linear-gradient(135deg,#7C3AED,#14B8A6)">SB</div>
-        <div class="member-info">
-          <div class="member-name">Sara Benali</div>
-          <div class="member-email">sara@mail.com</div>
-        </div>
-        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-          <span class="role-badge role-owner">Owner</span>
-          <span class="rep-score">★ 4.7</span>
-        </div>
-      </div>
-
-      <div class="member-row">
-        <div class="avatar" style="background:linear-gradient(135deg,#0EA5E9,#6366F1)">KH</div>
-        <div class="member-info">
-          <div class="member-name">Karim Haddad</div>
-          <div class="member-email">karim@mail.com</div>
-        </div>
-        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:5px;">
-          <span class="role-badge role-member">Member</span>
-          <span class="rep-score">★ 4.2</span>
-        </div>
-      </div>
       <div class="member-row">
         <div class="avatar" style="background:linear-gradient(135deg,#F43F5E,#FBBF24)">NM</div>
         <div class="member-info">
@@ -550,7 +546,8 @@
       </div>
 
     </div>
-  </div>
+
+</div>
   
 
 

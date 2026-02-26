@@ -85,5 +85,8 @@ class CategorieController extends Controller
     public function destroy(string $id)
     {
         //
+        // dd($id);
+        Categorie::destroy($id);
+        return to_route('colocation.index');
     }
 }

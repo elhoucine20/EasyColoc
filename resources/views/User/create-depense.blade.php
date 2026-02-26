@@ -491,6 +491,23 @@
                 transform: rotate(360deg);
             }
         }
+
+                    .navbar-back {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.625rem 1.25rem;
+            color: #94A3B8;
+            text-decoration: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .navbar-back:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
     </style>
 </head>
 <body>
@@ -504,11 +521,15 @@
             </a>
             
             <div class="navbar-links">
-                <a href="#" class="nav-link">
+                    <a href="{{route('colocation.show',$idColocation)}}" class="navbar-back">
+                      <i class="fas fa-arrow-left"></i>
+                      <span>Retour</span>
+                    </a>
+                <a href="{{route('colocation.show',$idColocation)}}" class="nav-link">
                     <i class="fas fa-user-circle"></i>
                     <span>Profile</span>
                 </a>
-                <a href="#" class="nav-link logout">
+                <a href="{{route('logout')}}" class="nav-link logout">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Logout</span>
                 </a>
@@ -538,11 +559,13 @@
             </div>
 
             <!-- Form -->
-            <form class="expense-form" id="expenseForm">
-                
+            <form action="{{route('depense.store',$idColocation)}}" method="post" class="expense-form" id="expenseForm">
+                @csrf
+                @method('POST')
                 <!-- Title -->
+                 <input type="text" hidden name="colocation_id" value="{{$idColocation}}">
                 <div class="form-group full-width">
-                    <label class="form-label" for="expenseTitle">
+                    <label class="form-label" for="title">
                         <i class="fas fa-tag"></i>
                         Titre de la dépense
                         <span class="required">*</span>
@@ -550,7 +573,7 @@
                     <input 
                         type="text" 
                         id="expenseTitle" 
-                        name="expenseTitle" 
+                        name="title" 
                         class="form-input" 
                         placeholder="Ex: Courses de la semaine"
                         required
@@ -563,7 +586,7 @@
                 <div class="form-row">
                     <!-- Amount -->
                     <div class="form-group">
-                        <label class="form-label" for="expenseAmount">
+                        <label class="form-label" for="montant">
                             <i class="fas fa-dollar-sign"></i>
                             Montant
                             <span class="required">*</span>
@@ -572,21 +595,20 @@
                             <input 
                                 type="number" 
                                 id="expenseAmount" 
-                                name="expenseAmount" 
+                                name="montant" 
                                 class="form-input" 
                                 placeholder="0.00"
                                 required
                                 min="0"
                                 step="0.01"
                             >
-                            <span class="currency-symbol">DH</span>
                         </div>
                         <span class="error-message" id="amountError">Veuillez entrer un montant</span>
                     </div>
 
                     <!-- Date -->
                     <div class="form-group">
-                        <label class="form-label" for="expenseDate">
+                        <label class="form-label" for="date">
                             <i class="fas fa-calendar-alt"></i>
                             Date
                             <span class="required">*</span>
@@ -594,7 +616,7 @@
                         <input 
                             type="date" 
                             id="expenseDate" 
-                            name="expenseDate" 
+                            name="date" 
                             class="form-input" 
                             required
                         >
@@ -606,77 +628,64 @@
                 <div class="form-row">
                     <!-- Category -->
                     <div class="form-group">
-                        <label class="form-label" for="expenseCategory">
+                        <label class="form-label" for="categorie_id">
                             <i class="fas fa-list"></i>
                             Catégorie
                             <span class="required">*</span>
                         </label>
                         <select 
                             id="expenseCategory" 
-                            name="expenseCategory" 
+                            name="categorie_id" 
                             class="form-select" 
                             required
                         >
                             <option value="">Sélectionner une catégorie</option>
-                            <option value="alimentation">🛒 Alimentation</option>
-                            <option value="logement">🏠 Logement</option>
-                            <option value="services">💡 Services (Eau, Électricité, Internet)</option>
-                            <option value="transport">🚗 Transport</option>
-                            <option value="loisirs">🎉 Loisirs</option>
-                            <option value="sante">⚕️ Santé</option>
-                            <option value="autre">📦 Autre</option>
+                            @if($categories)
+                            @foreach($categories as $categorie)
+                            <option value="{{$categorie->id}}">{{$categorie->name}}</option>
+                            @endforeach
+                            
+                    
+                            @endif
+      
                         </select>
                         <span class="error-message" id="categoryError">Veuillez sélectionner une catégorie</span>
                     </div>
 
                     <!-- Payer -->
                     <div class="form-group">
-                        <label class="form-label" for="expensePayer">
+                        <label class="form-label" for="payer_id">
                             <i class="fas fa-user"></i>
                             Payeur
                             <span class="required">*</span>
                         </label>
                         <select 
                             id="expensePayer" 
-                            name="expensePayer" 
+                            name="payer_id" 
                             class="form-select" 
                             required
                         >
                             <option value="">Qui a payé ?</option>
-                            <option value="ahmed">Ahmed</option>
-                            <option value="yassine">Yassine</option>
-                            <option value="omar">Omar</option>
-                            <option value="sarah">Sarah</option>
-                            <option value="fatima">Fatima</option>
+                            @if($users)
+                            @foreach($users as $user)
+                            <option value="{{$user->user->id}}">{{$user->user->name}}</option>
+                            @endforeach
+                            @endif
+  
                         </select>
                         <span class="error-message" id="payerError">Veuillez sélectionner un payeur</span>
                     </div>
                 </div>
 
-                <!-- Description (Optional) -->
-                <!-- <div class="form-group full-width">
-                    <label class="form-label" for="expenseDescription">
-                        <i class="fas fa-align-left"></i>
-                        Description (optionnel)
-                    </label>
-                    <textarea 
-                        id="expenseDescription" 
-                        name="expenseDescription" 
-                        class="form-input" 
-                        placeholder="Ajoutez des détails supplémentaires..."
-                        rows="3"
-                        maxlength="300"
-                        style="resize: vertical; min-height: 100px;"
-                    ></textarea>
-                    <span class="form-hint">Ajoutez des informations complémentaires si nécessaire</span>
-                </div> -->
-
                 <!-- Form Actions -->
                 <div class="form-actions">
-                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">
-                        <i class="fas fa-times"></i>
-                        <span>Annuler</span>
-                    </button>
+                    <a href="{{route('colocation.show',$idColocation)}}">
+                        <button type="button" class="btn btn-secondary">
+                          <i class="fas fa-times"></i>
+                          <span>Annuler</span>
+                       </button>
+                    </a>
+
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-plus"></i>
                         <span>Ajouter la dépense</span>

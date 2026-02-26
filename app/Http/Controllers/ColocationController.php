@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Services\Validate;
 use App\Models\Categorie;
 use App\Models\Colocation;
+use App\Models\User;
 use App\Models\User_Colocation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -88,7 +89,9 @@ class ColocationController extends Controller
         // dd($Colocation);
         $categories = Categorie::where('colocation_id','=',$Colocation->id)->get();
 
-        return view('User/colocation-entree',compact('Colocation','categories'));
+        $users = User_Colocation::with('user')->where('colocation_id','=',$Colocation->id)->get();
+        // dd($users);
+        return view('User/colocation-entree',compact('Colocation','categories','users'));
     }
 
     /**

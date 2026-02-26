@@ -376,7 +376,7 @@
                 <span>ColoSpace</span>
             </a>
             
-            <a href="{{route('colocation.index')}}" class="navbar-back">
+            <a href="{{route('colocation.show',$idColocation)}}" class="navbar-back">
                 <i class="fas fa-arrow-left"></i>
                 <span>Retour</span>
             </a>

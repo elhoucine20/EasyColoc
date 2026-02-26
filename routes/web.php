@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ColocationController;
+use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\loginController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\userController;
@@ -26,4 +27,5 @@ Route::middleware(userMiddleware::class)->group(function(){
     // colocation 
     Route::resource('colocation',ColocationController::class);
     Route::resource('categorie',CategorieController::class);
+    Route::resource('depense',DepenseController::class);
 });
