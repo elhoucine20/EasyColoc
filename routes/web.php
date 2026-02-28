@@ -5,6 +5,7 @@ use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\DepenseController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\loginController;
+use App\Http\Controllers\PaimentController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\userController;
 use App\Http\Middleware\userMiddleware;
@@ -32,5 +33,6 @@ Route::middleware(userMiddleware::class)->group(function(){
     Route::resource('invitation',InvitationController::class);
 
     Route::get('invitaion/accept/{token}', [InvitationController::class, 'accept'])->name('invitation.accept');
-    // Route::post('colocation/{colocation}/send', [InvitationController::class, 'send'])->name('invitation.send');
+    Route::patch('paiment/{paiment}/paid', [PaimentController::class, 'markAsPaid'])->name('paiment.paid');
+
 });

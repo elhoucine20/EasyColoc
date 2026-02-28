@@ -45,7 +45,7 @@ class CategorieController extends Controller
                 'name'=>$request->name,
                 'colocation_id'=>$request->colocation_id,
             ]);
-            return $this->index();
+            return to_route('colocation.show',$request->colocation_id);
         }else{
             return back();
         }
@@ -87,6 +87,6 @@ class CategorieController extends Controller
         //
         // dd($id);
         Categorie::destroy($id);
-        return to_route('colocation.index');
+        return back();
     }
 }

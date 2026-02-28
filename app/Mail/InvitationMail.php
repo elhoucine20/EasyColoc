@@ -39,7 +39,7 @@ class InvitationMail extends Mailable
     {
         return new Content(
             view: 'invitation',
-            // with: ['link'=>route('invitation.accept', $this->token)],
+            with: ['link'=>route('invitation.accept', $this->token)],
         );
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Services\Validate;
 use App\Models\Categorie;
 use App\Models\Colocation;
+use App\Models\Paiment;
 use App\Models\User;
 use App\Models\User_Colocation;
 use Illuminate\Http\Request;
@@ -91,7 +92,13 @@ class ColocationController extends Controller
 
         $users = User_Colocation::with('user')->where('colocation_id','=',$Colocation->id)->get();
         // dd($users);
-        return view('User/colocation-entree',compact('Colocation','categories','users'));
+
+            // $paiments = Paiment::with(['from', 'to', 'depense'])
+            //     ->whereHas('depense', fn($q) => $q->where('colocation_id', $Colocation->id))->get();
+
+    $paiments = Paiment::with(['from', 'to', 'depense'])->join('depenses', 'depenses.id', '=','paiments.depense_id')->where('depenses.colocation_id', $Colocation->id)->select('paiments.*')->get();
+
+        return view('User/colocation-entree',compact('Colocation','categories','users','paiments'));
     }
 
     /**

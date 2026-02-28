@@ -34,17 +34,21 @@ class Validate{
                return back();
             }
    }
-   public static function validateDepense($request){
-      return $request->validate([
-           'title' => 'required|string',
-           'montant' => 'required|integer',
-           'date' => 'required',
-           'categorie_id'=>'required',
-           'payer_id'=>'required',
-           'colocation_id'=>'required',
 
-      ]);
-   } 
-   // public function cree()
+   // public static function validateDepense($request){
+      //    return $request->validate([
+         //         'title' => 'required|string',
+         //         'montant' => 'required|integer',
+         //         'date' => 'required',
+         //         'categorie_id'=>'required',
+         //         'payer_id'=>'required',
+         //         'colocation_id'=>'required',
+         
+         //    ]);
+         // } 
+         // public function cree()
+         public function CalculeAmount( string $montant,int $members){
+            return $montant/$members;
+         }
 }
 ?>

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 // 
 use App\Models\Colocation;
+use App\Models\User_Colocation;
 
 class InvitationController extends Controller
 {
@@ -53,8 +54,8 @@ class InvitationController extends Controller
                 ]);
                 
                 Mail::to($invitation->email)->send(new InvitationMail($token));
-                // return to_route('colocation.show',$request->colocation_id);
-                return to_route('dashbord-user');
+                return to_route('colocation.show',$request->colocation_id)->with('succes','invitation send avec succes');
+                // return back()->;
 
                 }
 
@@ -94,23 +95,24 @@ class InvitationController extends Controller
     public function accept($token)
     {
 
+
         $invitation = Invitation::where('token', $token)
         ->where('statu', 'pending')->firstOrFail();
         $user = Auth::user();
         $userColocation = $user->colocations();
-        // if($userColocation->where('statu','active')->exists()){
-        //     return redirect()->route('dashbord-user')->with('error','Vous avez deja une colocation active');
-        //     }
-        $colocation = $invitation->colocation;
-        $colocation->members()->attach($user->id, [
+        if($userColocation->where('statu','active')->exists()){
+            return redirect()->route('dashbord-user')->with('error','Vous avez deja une colocation active');
+            }
+            // dd($invitation,'1');
+
+        $invitation->colocation->members()->attach($user->id, [
             'type' => 'member',
             'joined_at' => now()
             ]);
-            $invitation->colocation->members()->attach($user->id, [
-                'type'=>'member',
-                'joined_at'=> now()
-                ]);
-                $invitation->update(['statu', 'accepted']);
+
+            $invitation->update(['statu'=>'accepted']);
+            // dd($invitation,'2');
+
                 // dd('hello invitation to accepted2');
         return redirect()->route('colocation.show',$invitation->colocation);    
     }

@@ -7,6 +7,7 @@ use App\Http\Services\Validate;
 use App\Models\Categorie;
 use App\Models\Colocation;
 use App\Models\Depense;
+use App\Models\Paiment;
 use App\Models\User_Colocation;
 use Illuminate\Http\Request;
 
@@ -39,10 +40,8 @@ class DepenseController extends Controller
         //
         // $requestValidated = Validate::validateDepense($request);
         // dd($request->post());
-        // if ($request) {
-            # code...
             // Depense::create($requestValidated);
-            Depense::create([
+            $depense = Depense::create([
                 'title'=>$request->title,
                 'montant'=>$request->montant,
                 'date'=>$request->date,
@@ -50,8 +49,29 @@ class DepenseController extends Controller
                 'categorie_id'=>$request->categorie_id,
                 'payer_id'=>$request->payer_id,
             ]);
+
+            $members = User_Colocation::where('colocation_id',$request->colocation_id)->get();
+            $NbrMembers = $members->count();
+            if ($NbrMembers > 0) {
+                # code...
+                $part = $request->montant / $NbrMembers;
+
+                foreach($members as $member){
+
+                  if ($member->user_id != $request->payer_id) {
+                    # code...
+                    Paiment::create([
+                      'amount' => $part,
+                      'is_payed' => 'inpayed',
+                      'from_id' => $member->user_id,  
+                      'to_id' => $request->payer_id, 
+                      'depense_id' => $depense->id,
+                    ]);
+                  }
+                }
+            }
+
             return to_route('colocation.show',$request->colocation_id);
-        // }
     }
 
     /**
@@ -88,6 +108,8 @@ class DepenseController extends Controller
      */
     public function destroy(Depense $depense)
     {
-        //
+        // dd($id);
+        Depense::destroy($depense->id);
+        return back();
     }
 }

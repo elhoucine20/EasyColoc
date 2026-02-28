@@ -628,12 +628,16 @@ body {
                 <span>ColoSpace</span>
             </div>
         </div>
+
         
         <nav class="sidebar-nav">
             <a href="#" class="nav-item active">
                 <i class="fas fa-chart-line"></i>
                 <span>Dashboard</span>
             </a>
+         @if(session('error'))
+        <p style="color: red;">{{session('error')}}</p>
+        @endif
             <a href="{{route('colocation.index')}}" class="nav-item">
                 <i class="fas fa-building"></i>
                 <span>My Colocations</span>
@@ -653,7 +657,7 @@ body {
         </nav>
         
         <div class="sidebar-footer">
-            <a href="#" class="nav-item logout">
+            <a href="{{route('logout')}}" class="nav-item logout">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </a>
