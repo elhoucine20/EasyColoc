@@ -23,15 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'statu',
     ];
-
-    public function colocation():BelongsToMany{
-        return $this->belongsToMany(Colocation::class,'user_colocation');
-    }
-
-    public function depense():HasMany{
-        return $this->hasMany(Depense::class);
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -42,9 +36,6 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
-
-
     /**
      * Get the attributes that should be cast.
      *
@@ -58,24 +49,15 @@ class User extends Authenticatable
         ];
     }
 
-
-
     public function colocations()
     {
         return $this->belongsToMany(Colocation::class,'user_colocation')
         ->withPivot('type','joined_at', 'left_at')->withTimestamps();
     }
 
+    public function depense():HasMany{
+        return $this->hasMany(Depense::class);
+    }
 
-    // public function ownedColocations()
-    // {
-    // return $this->hasMany(Colocation::class, 'owner_id');
-    // } 
-    
-
-    // public function categories()
-    // {
-    //     return $this->hasMany(Category::class);
-    // }
 
 }

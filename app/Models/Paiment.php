@@ -15,13 +15,13 @@ class Paiment extends Model
 
     public function from() {
     return $this->belongsTo(User::class, 'from_id'); 
-}
-
-public function to() {
-    return $this->belongsTo(User::class, 'to_id');  
-}
-
-public function depense() {
-    return $this->belongsTo(Depense::class);
-}
+   }
+   
+   public function to() {
+       return $this->belongsTo(User::class, 'to_id');  
+   }
+   
+   public function depense() {
+       return $this->belongsTo(Depense::class);
+   }
 }

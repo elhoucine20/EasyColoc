@@ -17,10 +17,6 @@ class Colocation extends Model
       'owner_id'
       ];
     
-    public function user():BelongsToMany{
-      return $this->belongsToMany(User::class,'user_colocation');
-    }
-
     public function categorie():HasMany{
       return $this->hasMany(Categorie::class);
     }
@@ -29,7 +25,7 @@ class Colocation extends Model
       return $this->hasManyThrough(Depense::class,Categorie::class);
     }
 
-    public function members()
+    public function members():BelongsToMany
     {
     return $this->belongsToMany(User::class, 'user_colocation')
     ->withPivot('type', 'joined_at', 'left_at')->withTimestamps();

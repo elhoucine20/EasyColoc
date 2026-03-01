@@ -29,7 +29,7 @@ class Validate{
       ]);
    } 
    public static function ColocationsStatuIsActive($user){
-         $IsActive = $user->colocation()->where('colocations.statu','=','active')->exists();
+         $IsActive = $user->colocations()->where('colocations.statu','=','active')->exists();
             if ($IsActive) {
                return back();
             }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\ColocationController;
 use App\Http\Controllers\DepenseController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\loginController;
 use App\Http\Controllers\PaimentController;
 use App\Http\Controllers\registerController;
 use App\Http\Controllers\userController;
+use App\Http\Middleware\adminMiddleware;
 use App\Http\Middleware\userMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -26,13 +28,20 @@ Route::get('/login', [loginController::class, 'Logout'])->name('logout');
 Route::middleware(userMiddleware::class)->group(function(){
 
     Route::get('/dashbord', [userController::class, 'index'])->name('dashbord-user');
-    // colocation 
+    // 
     Route::resource('colocation',ColocationController::class);
     Route::resource('categorie',CategorieController::class);
     Route::resource('depense',DepenseController::class);
     Route::resource('invitation',InvitationController::class);
-
+    
     Route::get('invitaion/accept/{token}', [InvitationController::class, 'accept'])->name('invitation.accept');
     Route::patch('paiment/{paiment}/paid', [PaimentController::class, 'markAsPaid'])->name('paiment.paid');
+    
+    });
+    Route::middleware(adminMiddleware::class)->group(function(){
+        
+        Route::get('/dashbord-admin', [AdminController::class, 'index'])->name('dashbord-admin');
+        Route::patch('admin/ban/{user}',   [AdminController::class, 'ban'])->name('admin.ban');
+        Route::patch('admin/unban/{user}', [AdminController::class, 'unban'])->name('admin.unban');
 
-});
+    });

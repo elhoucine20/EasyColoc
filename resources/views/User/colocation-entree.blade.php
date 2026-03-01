@@ -718,7 +718,7 @@
           </div>
           
           @if($paiment->from_id == Auth::id() && $paiment->is_payed == 'inpayed')
-          <span style="color:#F43F5E;" class="settlement-amount">{{ $paiment->amount }} MAD</span>
+          <span style="color:#F43F5E;" class="settlement-amount">{{ number_format($paiment->amount,2) }} MAD</span>
           {{-- C'est moi qui dois payer --}}
           <form method="POST" action="{{ route('paiment.paid', $paiment->id) }}">
             @csrf
@@ -726,7 +726,7 @@
             <button type="submit" class="btn btn-teal">Mark as payed </button>
           </form>
           @else
-          <span style="color: var(--teal);" class="settlement-amount">{{ $paiment->amount }} MAD</span>
+          <span style="color: var(--teal);" class="settlement-amount">{{ number_format($paiment->amount,2) }} MAD</span>
 
           {{-- C'est l'autre qui doit me payer --}}
           @if($paiment->is_payed == 'payed')

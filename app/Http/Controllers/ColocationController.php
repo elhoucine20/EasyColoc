@@ -24,7 +24,7 @@ class ColocationController extends Controller
     {
         //
         // $colocations = Colocation::all();
-        $colocations = Auth::user()->colocation;
+        $colocations = Auth::user()->colocations;
         return view('User/colocations',compact('colocations'));
     }
 
@@ -92,9 +92,6 @@ class ColocationController extends Controller
 
         $users = User_Colocation::with('user')->where('colocation_id','=',$Colocation->id)->get();
         // dd($users);
-
-            // $paiments = Paiment::with(['from', 'to', 'depense'])
-            //     ->whereHas('depense', fn($q) => $q->where('colocation_id', $Colocation->id))->get();
 
     $paiments = Paiment::with(['from', 'to', 'depense'])->join('depenses', 'depenses.id', '=','paiments.depense_id')->where('depenses.colocation_id', $Colocation->id)->select('paiments.*')->get();
 
