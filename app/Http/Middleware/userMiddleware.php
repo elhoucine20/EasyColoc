@@ -19,8 +19,12 @@ class userMiddleware
         $user = Auth::user();
         if (Auth::check() && $user->role =="user") {
             # code...
+            if($user->statu == 'banned'){
+                return to_route('login')->with('banned','your account is banned by admin');
+              }
             return $next($request);
-        }else{
+        }
+        else{
             return back();
         }
     }

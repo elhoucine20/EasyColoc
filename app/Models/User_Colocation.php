@@ -12,6 +12,7 @@ class User_Colocation extends Model
         'joined_at',
         'user_id',
         'colocation_id',
+        'left_at',
     ];
 
         public function colocation()

@@ -26,14 +26,6 @@ class InvitationController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -52,11 +44,9 @@ class InvitationController extends Controller
                     'colocation_id'=>$request->colocation_id,
                     'statu'=>'pending',
                 ]);
-                
+
                 Mail::to($invitation->email)->send(new InvitationMail($token));
                 return to_route('colocation.show',$request->colocation_id)->with('succes','invitation send avec succes');
-                // return back()->;
-
                 }
 
     /**
@@ -68,34 +58,8 @@ class InvitationController extends Controller
         return view('User/create-invitation',compact('idColocation'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Invitation $invitation)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Invitation $invitation)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Invitation $invitation)
-    {
-        //
-    }
-
     public function accept($token)
     {
-
-
         $invitation = Invitation::where('token', $token)
         ->where('statu', 'pending')->firstOrFail();
         $user = Auth::user();

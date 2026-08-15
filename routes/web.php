@@ -36,7 +36,8 @@ Route::middleware(userMiddleware::class)->group(function(){
     
     Route::get('invitaion/accept/{token}', [InvitationController::class, 'accept'])->name('invitation.accept');
     Route::patch('paiment/{paiment}/paid', [PaimentController::class, 'markAsPaid'])->name('paiment.paid');
-    
+
+    Route::patch('colocation/{colocation}/leave', [ColocationController::class, 'leave'])->name('colocation.leave');
     });
     Route::middleware(adminMiddleware::class)->group(function(){
         

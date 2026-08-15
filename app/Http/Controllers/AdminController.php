@@ -10,10 +10,6 @@ use Illuminate\Http\Request;
 class AdminController extends Controller
 {
     //
-    
-    
-
-
     public function index()
 {
     return view('Admin/dashbord-admin', [
@@ -28,12 +24,13 @@ class AdminController extends Controller
 public function ban(User $user) {
     // dd($user);
     $user->update(['statu' => 'banned']);
-    return back()->with('success', 'Utilisateur banni ✅');
-}
-
-public function unban(User $user) {
+    return back()->with('success', 'Utilisateur banni ');
+    }
+    
+    public function unban(User $user) {
+    // dd($user);
     $user->update(['statu' => 'active']);
-    return back()->with('success', 'Utilisateur débanni ✅');
+    return back()->with('success', 'Utilisateur débanni ');
 }
 
 }

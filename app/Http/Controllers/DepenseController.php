@@ -23,15 +23,6 @@ class DepenseController extends Controller
         return to_route('colocation.index');
 
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
@@ -85,22 +76,6 @@ class DepenseController extends Controller
          
         return view('User/create-depense',compact('idColocation','categories','users'));
 
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Depense $depense)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Depense $depense)
-    {
-        //
     }
 
     /**

@@ -215,7 +215,7 @@
         }
 
         .error-message {
-            display: none;
+            /* display: none; */
             background: #fef2f2;
             border: 1px solid #fca5a5;
             color: #dc2626;
@@ -245,7 +245,11 @@
         <h1>Welcome Back</h1>
         <p class="subtitle">Sign in to your account to continue</p>
 
-        <div class="error-message" id="errorMessage">Invalid email or password. Please try again.</div>
+        @if(session('banned'))
+        <div class="error-message" >
+       {{session('banned')}}
+        </div>
+        @endif
 
         <form action="{{route('login')}}" method="POST" id="loginForm">
             @csrf

@@ -1,0 +1,22 @@
+services:
+
+  app:
+    build: .
+    container_name: easycoloc-app
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+    volumes:
+      - .:/var/www/html
+
+  postgres:
+    image: postgres:16
+    container_name: easycoloc-db
+    restart: always
+    environment:
+      POSTGRES_DB: easycoloc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 12345678
+    ports:
+      - "5432:5432"

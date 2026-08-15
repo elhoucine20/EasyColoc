@@ -18,18 +18,6 @@ class CategorieController extends Controller
         return to_route('colocation.index');
         
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-        // $colocations = Colocation::all();
-        // dd($idColocation);
-        // return view('User/create-categorie',compact('idColocation'));
-    }
-
     /**
      * Store a newly created resource in storage.
      */
